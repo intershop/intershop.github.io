@@ -9,7 +9,7 @@
 		schemaLocation="http://www.w3.org/2001/xml.xsd" />
 	<xsd:import
 		namespace="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"
-		schemaLocation="dt.xsd" />
+		schemaLocation="https://intershop.github.io/xml/enfinity/6.5/core/dt.xsd" />
 
 	<xsd:attributeGroup name="documentVersion">
 		<xsd:attribute name="major">
