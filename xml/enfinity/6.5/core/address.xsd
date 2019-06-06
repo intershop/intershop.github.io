@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="core.xsd" />
+
+	<xsd:complexType name="complexType.Address" mixed="false">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="address-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="address-nr"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="city"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="country-code"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. use sub-division instead-->
+			<xsd:element name="county"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="postbox"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="postal-code"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. use sub-division instead -->
+			<xsd:element name="prefecture"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />	
+			<!--  @Deprecated since 7.8. use main-division instead-->
+			<xsd:element name="province"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="region"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. use main-division instead-->
+			<xsd:element name="state"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="sub-division"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="main-division"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="street-transcription"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="homepage"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="mobile"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="phone-mobile"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="phone-home"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="phone-business"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="phone-business-direct"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="company-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="company-name1"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="company-name2"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="company-name-transcription"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="honorific"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="aristocratic-title"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="title"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="job-title"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="suffix"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="first-name-transcription"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="last-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="last-name-transcription"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="first-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="second-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="second-name-transcription"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="second-lastname"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="street"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="street2"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<!--  @Deprecated since 7.8. -->
+			<xsd:element name="street3"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="address-line1"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="address-line2"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="address-line3"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="email"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="fax" type="simpleType.Generic.String.256"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="custom-attributes"
+				type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+		<xsd:attribute name="name" type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.BasicAddress" mixed="false">
+		<xsd:complexContent>
+			<xsd:extension base="complexType.Address">
+				<xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:element name="ship-from-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+					<xsd:element name="ship-to-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+					<xsd:element name="invoice-to-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+					<xsd:element name="service-to-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+					<xsd:element name="install-to-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+					<xsd:element name="store-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />																		
+					<xsd:element name="default-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+</xsd:schema>
