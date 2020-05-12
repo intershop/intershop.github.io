@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	xmlns:ns="http://www.intershop.com/xml/ns/enfinity/6.6/bc_marketing/impex"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" 
+    elementFormDefault="qualified" jxb:version="1.0">
+
+	<xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/core.xsd" />
+
+	<!-- PromotionCodeGroup -->
+	<xsd:element name="promotion-code-group">
+		<xsd:complexType mixed="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					PromotionCodeGroup contains (assign) the
+					promotion codes and other attributes, for labeling dependencies to
+					assigned promotions.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element name="use-promotion-time" type="xsd:boolean" />
+				<xsd:element name="start-date" type="simpleType.DateTime" minOccurs="0" />
+				<xsd:element name="end-date" type="simpleType.DateTime" minOccurs="0" />
+				<xsd:element name="number-of-reuses" type="xsd:int" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							This is an optional field. If not inside the
+							import, the field is set to 0 at the persistent object. 0
+							indicates unlimited reuses.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="number-of-reuses-per-customer" type="xsd:int" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							This is an optional field. If not inside the
+							import, the field is set to 0 at the persistent object. 0
+							indicates unlimited reuses.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="enabled" type="xsd:boolean" />
+				<xsd:element name="use-promotion-target-groups" type="xsd:boolean" />
+				<xsd:element name="use-promotion-apps" type="xsd:boolean" />
+				<xsd:element name="target-group" type="PCGTargetGroup" />
+				<xsd:element name="applications" type="xsd:string" maxOccurs="unbounded" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							Defines assignment to an application.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="promotions" type="Promotions" />
+				<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="simpleType.Generic.String.256" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- PromotionCodeGroups -->
+	<xsd:complexType name="Promotions">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines assignment to an promotion.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="promotion-id" type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PCGTargetGroup">
+		<xsd:annotation>
+			<xsd:documentation>
+				References assigned userGroups.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="consumer-groups" type="PCGConsumerGroupsRef" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="affiliates" type="PCGAffiliatesRef" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="PCGConsumerGroupsRef">
+		<xsd:sequence>
+			<xsd:element name="consumer-group" type="PCGConsumerGroupRef" minOccurs="0"  maxOccurs="unbounded"/>
+		</xsd:sequence>
+    </xsd:complexType>
+    
+	<xsd:complexType name="PCGAffiliatesRef">
+		<xsd:sequence>
+			<xsd:element name="affiliate-partner" type="PCGAffiliatePartnerRef" minOccurs="0"  maxOccurs="unbounded"/>
+			<xsd:element name="affiliate-program" type="PCGAffiliateProgramRef" minOccurs="0"  maxOccurs="unbounded"/>
+		</xsd:sequence>
+    </xsd:complexType>
+    
+	<xsd:complexType name="PCGConsumerGroupRef">
+		<xsd:sequence>
+			<xsd:element name="number-of-reuses" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						This is an optional field. If not inside the import, the field
+						is set to 0 at the persistent object. 0 indicates unlimited reuses.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="number-of-redemptions" type="xsd:int" />
+		</xsd:sequence>
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+        <xsd:attribute name="domain" type="xsd:string" use="required"/>
+    </xsd:complexType>
+	
+	<xsd:complexType name="PCGAffiliatePartnerRef">
+		<xsd:sequence>
+			<xsd:element name="number-of-reuses" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						This is an optional field. If not inside the import, the field
+						is set to 0 at the persistent object. 0 indicates unlimited reuses.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="number-of-redemptions" type="xsd:int" />
+		</xsd:sequence>
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+        <xsd:attribute name="domain" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    
+   	<xsd:complexType name="PCGAffiliateProgramRef">
+		<xsd:sequence>
+			<xsd:element name="number-of-reuses" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						This is an optional field. If not inside the import, the field
+						is set to 0 at the persistent object. 0 indicates unlimited reuses.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="number-of-redemptions" type="xsd:int" />
+		</xsd:sequence>
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+        <xsd:attribute name="partner" type="xsd:string" use="required"/>
+        <xsd:attribute name="domain" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	xmlns="http://www.intershop.com/xml/ns/enfinity/6.5/bc_shipping_data/impex"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:dt="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"
+	targetNamespace="http://www.intershop.com/xml/ns/enfinity/6.5/bc_shipping_data/impex"
+	elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/core.xsd" />
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace"
+		schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/xml.xsd" />
+	<xsd:import
+		namespace="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"
+		schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/dt.xsd" />
+
+	<xsd:element name="bracket" type="Bracket"></xsd:element>
+	<xsd:complexType name="Bracket">
+		<xsd:sequence>
+			<xsd:element name="currency" type="xsd:string" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="shipping-charge-plan" type="ChargePlan"></xsd:element>
+	<xsd:complexType name="ChargePlan">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="tax-class" type="xsd:string" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="bracket" type="Bracket" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	
+	<xsd:element name="shipping-method" type="ShippingMethod"></xsd:element>
+	<xsd:complexType name="ShippingMethod">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string"></xsd:element>
+			<xsd:element name="active" type="xsd:boolean" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="sequence-number" type="xsd:int" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="ship-time-lower" type="xsd:int" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="ship-time-upper" type="xsd:int" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="instruction-support" type="xsd:boolean" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="start-date" type="xsd:date" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="end-date" type="xsd:date" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="shipping-charge-plan-type" type="xsd:string" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="shipping-charge-plan" type="ChargePlan" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="enfinity">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="shipping-method" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
+

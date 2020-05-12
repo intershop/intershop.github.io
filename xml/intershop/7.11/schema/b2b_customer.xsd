@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	xmlns="http://www.intershop.com/xml/ns/intershop/customer/impex/7.3"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:dt="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"
+	targetNamespace="http://www.intershop.com/xml/ns/intershop/customer/impex/7.3"
+	elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/core.xsd" />
+	<xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/customeruser.xsd" />
+
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/xml.xsd"/>
+	<xsd:import namespace="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt" schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/dt.xsd"/>
+
+	<xsd:element name="enfinity">
+		<xsd:complexType mixed="false">
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="customer" minOccurs="0" maxOccurs="unbounded" />
+			</xsd:choice>
+			<xsd:attributeGroup ref="documentVersion" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="customer" type="Customer"/>
+
+	<xsd:complexType name="Customer">
+		<xsd:annotation>
+			<xsd:documentation>
+				Customers are containers for users. In a B2C scenario exactly one user is assigned
+				to a customer. In a B2B scenario at least one user is assigned to the customer.
+				Besides the users a customer has an ID, a localizable name and a customer type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="external-id"	type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="external-urn" type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="display-name" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="customer-type" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="company-name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="company-name2" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="taxation-id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="industry" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="enabled" type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="approval-status" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="users" type="Users" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="preferred-invoice-to-address" type="complexType.BasicAddress" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="preferred-ship-to-address" type="complexType.BasicAddress" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="addresses"
+				type="complexType.Customer.Addresses" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="account-managers" type="complexType.AccountManagers" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="cost-object-types" type="complexType.CostObjectTypes" minOccurs="0" maxOccurs="1">
+				<xsd:key name="costObjectTypeKey">
+					<xsd:selector xpath="cost-object-type"/>
+					<xsd:field xpath="@name"/>
+				</xsd:key>
+			</xsd:element>
+			<xsd:element name="cost-centers" type="complexType.CostCenters" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+		<xsd:attribute name="import-mode" type="simpleType.ImportMode" />
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.Customer.Addresses" mixed="false">
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="address" type="complexType.BasicAddress"
+				minOccurs="0" maxOccurs="unbounded" />
+			</xsd:choice>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Users">
+		<xsd:annotation>
+			<xsd:documentation>References assigned users.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="user" type="complexType.User" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.AccountManagers" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="account-manager" type="complexType.AccountManager"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="complexType.AccountManager">
+		<xsd:attribute name="id" type="simpleType.Generic.String.256"
+			use="required" />
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.UserByLogin">
+		<xsd:attribute name="login" type="simpleType.Generic.String.256" use="required" />
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.CostCenterBuyer">
+		<xsd:complexContent>
+			<xsd:extension base="complexType.UserByLogin">
+				<xsd:sequence>
+					<xsd:element name="budget" type="complexType.CostCenterBudget" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.CostCenters" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="cost-center" type="complexType.CostCenter"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.CostCenter">
+		<xsd:sequence>
+			<xsd:element name="budget" type="complexType.CostCenterBudget" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="owner" type="complexType.UserByLogin" minOccurs="1" maxOccurs="1"/>
+
+			<xsd:element name="buyers" type="complexType.CostCenterBuyers" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+
+		<xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+		<xsd:attribute name="name" type="simpleType.Generic.String.256" use="required"/>
+		<xsd:attribute name="active" type="simpleType.Boolean" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.CostCenterBudget" mixed="false">
+		<xsd:attribute name="period" type="simpleType.Generic.String.256" use="required" />
+		<xsd:attribute name="value" type="simpleType.Generic.String.256" use="required" />
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.CostCenterBuyers" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="buyer" type="complexType.CostCenterBuyer" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.CostObjectTypes" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="cost-object-type" type="complexType.CostObjectType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:key name="descriptionLanguageKey">
+					<xsd:selector xpath="description"/>
+					<xsd:field xpath="@xml:lang"/>
+				</xsd:key>
+				<xsd:key name="displayNameLanguageKey">
+					<xsd:selector xpath="display-name"/>
+					<xsd:field xpath="@xml:lang"/>
+				</xsd:key>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.CostObjectType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Cost object types describe what kind of object the cost object represents.
+				For example Project Number, Contract Number, Cost Center, etc.
+				They should have unique name attribute(per customer) and optional translations for display name and description.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name ="display-name" type="complexType.TranslatableField" />
+			<xsd:element name ="description" type="complexType.TranslatableField" />
+		</xsd:choice>
+		<xsd:attribute name="name" type="simpleType.Generic.String.256" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="complexType.TranslatableField">
+		<xsd:annotation>
+			<xsd:documentation>
+				Generic type for XML element which contains text translation in language specified by xml:lang attribute
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="simpleType.Generic.String.4000">
+				<xsd:attribute ref="xml:lang" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+</xsd:schema>

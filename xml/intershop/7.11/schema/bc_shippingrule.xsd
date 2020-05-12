@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+	xmlns="http://www.intershop.com/xml/ns/enfinity/6.5/bc_shipping/rule/impex"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:dt="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"
+	targetNamespace="http://www.intershop.com/xml/ns/enfinity/6.5/bc_shipping/rule/impex"
+	elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/core.xsd"></xsd:include>
+	<xsd:import schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/xml.xsd"
+		namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
+	<xsd:import schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/dt.xsd"
+		namespace="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"></xsd:import>
+	
+	<xsd:element name="enfinity">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="shipping-rule" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="shipping-rule" type="ShippingRule"></xsd:element>
+	<xsd:element name="shipping-condition" type="ShippingCondition"/>
+	<xsd:element name="shipping-action" type="ShippingAction"/>
+	
+	<xsd:complexType name="ShippingRule">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string"></xsd:element>
+			<xsd:element name="active" type="xsd:boolean" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+			<xsd:element ref="shipping-condition" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element ref="shipping-action" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ShippingCondition">
+		<xsd:sequence>
+			<xsd:element name="position" type="xsd:int" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="condition-descriptor-id" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+			<xsd:element name="name" type="xsd:string" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="operator" type="xsd:boolean" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="grouping" type="xsd:boolean" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="not" type="xsd:boolean" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+			<xsd:element ref="shipping-condition" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ShippingAction">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>

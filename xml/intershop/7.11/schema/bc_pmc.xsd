@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+    xmlns="http://www.intershop.com/xml/ns/enfinity/6.5/bc_pmc/impex"
+    xmlns:jxb="http://java.sun.com/xml/ns/jaxb" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:dt="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"
+    targetNamespace="http://www.intershop.com/xml/ns/enfinity/6.5/bc_pmc/impex"
+    elementFormDefault="qualified"
+    jxb:version="2.0">
+
+    <xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/core.xsd"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/xml.xsd"/>
+    <xsd:import namespace="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt" schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/dt.xsd"/>
+
+    <xsd:element name="enfinity">
+        <xsd:complexType>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="pagelet-page"/>
+                <xsd:element ref="pagelet-component"/>
+                <xsd:element ref="shared-pagelet-page"/>
+                <xsd:element ref="shared-pagelet-component"/>
+                <xsd:element ref="page-template"/>
+                <xsd:element ref="component-template"/>
+                <xsd:element ref="pagelet-slot-assignment"/>
+                <xsd:element ref="pagelet-slot-sharing-information"/>
+                <xsd:element ref="pagelet-entry-point"/>
+                <xsd:element ref="shared-pagelet-entry-point"/>
+                <xsd:element ref="pagelet-pagelet-entry-point-assignment"/>
+                <xsd:element ref="pagelet-entry-point-sharing-information"/>
+                <xsd:element ref="pagelet-entry-point-businessobject-assignment"/>
+                <xsd:element ref="pagelet-placeholder-assignment"/>
+                <xsd:element ref="view-context"/>
+                <xsd:element ref="shared-page-template"/>
+                <xsd:element ref="shared-component-template"/>
+            </xsd:choice>
+        </xsd:complexType>
+        <xsd:unique name="uniquePageletPage">
+           <xsd:selector xpath="./pagelet-page"/>
+           <xsd:field xpath="@id"/>
+        </xsd:unique>
+        <xsd:unique name="uniquePageletComponent">
+           <xsd:selector xpath="./pagelet-component"/>
+           <xsd:field xpath="@id"/>
+        </xsd:unique>
+        <xsd:unique name="uniqueSharedPageletPage">
+           <xsd:selector xpath="./shared-pagelet-page"/>
+           <xsd:field xpath="@id"/>
+           <xsd:field xpath="@domain"/>
+        </xsd:unique>
+        <xsd:unique name="uniqueSharedPageletComponent">
+           <xsd:selector xpath="./shared-pagelet-component"/>
+           <xsd:field xpath="@id"/>
+           <xsd:field xpath="@domain"/>
+        </xsd:unique>
+        <xsd:unique name="uniquePageletEntryPoint">
+            <xsd:selector xpath="./pagelet-entry-point"/>
+            <xsd:field xpath="@id"/>
+        </xsd:unique>
+        <xsd:unique name="uniqueSharedPageletEntryPoint">
+            <xsd:selector xpath="./shared-pagelet-entry-point"/>
+            <xsd:field xpath="@id"/>
+            <xsd:field xpath="@domain"/>
+        </xsd:unique>
+        <xsd:key name="SlotSharingInformationKey">
+            <xsd:selector xpath="./pagelet-slot-sharing-information"/>
+            <xsd:field xpath="@definition-name"/>
+            <xsd:field xpath="@parent-pagelet-id"/>
+            <xsd:field xpath="@domain"/>
+        </xsd:key>
+        <xsd:key name="PageletEntryPointSharingInformationKey">
+            <xsd:selector xpath="./pagelet-entry-point-sharing-information"/>
+            <xsd:field xpath="@id"/>
+            <xsd:field xpath="@domain"/>
+        </xsd:key>
+    </xsd:element>
+
+    <xsd:element name="pagelet-page" type="PageletType"/>
+    <xsd:element name="pagelet-component" type="PageletType"/>
+    <xsd:element name="shared-pagelet-page" type="SharedPageletType"/>
+    <xsd:element name="shared-pagelet-component" type="SharedPageletType"/>
+    <xsd:element name="shared-page-template" type="SharedPageletType"/>
+    <xsd:element name="shared-component-template" type="SharedPageletType"/>
+    <xsd:element name="page-template" type="TemplateType"/>
+    <xsd:element name="component-template" type="TemplateType"/>
+    <xsd:element name="pagelet-slot-assignment" type="PageletSlotAssignmentType"/>
+    <xsd:element name="pagelet-slot-sharing-information" type="PageletSlotSharingInformationType"/>
+    <xsd:element name="pagelet-entry-point" type="PageletEntryPointType"/>
+    <xsd:element name="shared-pagelet-entry-point" type="SharedPageletEntryPointType"/>
+    <xsd:element name="pagelet-pagelet-entry-point-assignment" type="PageletPageletEntryPointAssignmentType"/>
+    <xsd:element name="pagelet-entry-point-businessobject-assignment" type="PageletEntryPointBusinessObjectAssignmentType"/>
+    <xsd:element name="pagelet-entry-point-sharing-information" type="PageletEntryPointSharingInformationType"/>
+    <xsd:element name="pagelet-placeholder-assignment" type="PageletPlaceholderAssignmentType"/>
+    <xsd:element name="view-context" type="ViewContextType"/>
+    
+    <xsd:complexType name="PageletBaseType" mixed="false" abstract="true">
+        <xsd:sequence>
+            <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="parent" minOccurs="0" maxOccurs="1" type="PageletParent" />
+            <xsd:element name="display-name" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="description" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="valid-from" type="Date" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="valid-to" type="Date" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="online" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="active" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="author" type="UserType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="configuration-parameters" type="ConfigurationParametersType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="slots" minOccurs="0" maxOccurs="1" type="SlotsType"/>
+            <xsd:element name="placeholder-configurations" minOccurs="0" maxOccurs="1" type="PlaceholderConfigurationsType" />
+            <xsd:element name="placeholder-definitions" minOccurs="0" maxOccurs="1" type="PlaceholderDefinitionsType" />
+            <xsd:element name="pagelet-user-group-assignments" type="PageletUserGroupAssignmentsType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="shared-slots" type="SharedSlotsType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="optional"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="SlotsType">
+        <xsd:sequence>
+            <xsd:element name="slot" type="PageletSlotType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="SharedSlotsType">
+        <xsd:sequence>
+            <xsd:element name="slot" type="PageletSlotSharingInformationBaseType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PlaceholderConfigurationsType">
+        <xsd:sequence>
+            <xsd:element name="placeholder-configuration" type="PlaceholderConfigurationType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PlaceholderDefinitionsType">
+        <xsd:sequence>
+            <xsd:element name="placeholder-definition" type="PlaceholderDefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PageletUserGroupAssignmentsType">
+        <xsd:sequence>
+            <xsd:element name="user-group" minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType mixed="false">
+                    <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+                    <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="required"/>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PageletParent">
+        <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="optional"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletType" mixed="false">
+        <xsd:complexContent>
+            <xsd:restriction base="PageletBaseType">
+                <xsd:sequence>
+                    <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+                    <xsd:element name="parent" minOccurs="0" maxOccurs="1" type="PageletParent" />
+                    <xsd:element name="display-name" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="description" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="valid-from" type="Date" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="valid-to" type="Date" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="online" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="author" type="UserType" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="configuration-parameters" type="ConfigurationParametersType" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="slots" minOccurs="0" maxOccurs="1" type="SlotsType"/>
+                    <xsd:element name="placeholder-configurations" minOccurs="0" maxOccurs="1" type="PlaceholderConfigurationsType" />
+                    <xsd:element name="pagelet-user-group-assignments" type="PageletUserGroupAssignmentsType" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+                </xsd:sequence>
+                <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+                <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="prohibited"/>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SharedPageletType">
+        <xsd:complexContent>
+            <xsd:restriction base="PageletBaseType">
+                <xsd:sequence>
+                    <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+                    <xsd:element name="valid-from" type="Date" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="valid-to" type="Date" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="online" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="configuration-parameters" type="ConfigurationParametersType" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="placeholder-configurations" minOccurs="0" maxOccurs="1" type="PlaceholderConfigurationsType" />
+                    <xsd:element name="placeholder-definitions" minOccurs="0" maxOccurs="1" type="PlaceholderDefinitionsType" />
+                    <xsd:element name="pagelet-user-group-assignments" type="PageletUserGroupAssignmentsType" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="shared-slots" type="SharedSlotsType" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+                </xsd:sequence>
+                <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+                <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="required"/>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="TemplateType">
+        <xsd:complexContent>
+            <xsd:restriction base="PageletBaseType">
+                <xsd:sequence>
+                    <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+                    <xsd:element name="parent" minOccurs="0" maxOccurs="1" type="PageletParent" />
+                    <xsd:element name="display-name" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="description" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="active" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="author" type="UserType" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="configuration-parameters" type="ConfigurationParametersType" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="slots" minOccurs="0" maxOccurs="1" type="SlotsType"/>
+                    <xsd:element name="placeholder-configurations" minOccurs="0" maxOccurs="1" type="PlaceholderConfigurationsType" />
+                    <xsd:element name="placeholder-definitions" minOccurs="0" maxOccurs="1" type="PlaceholderDefinitionsType" />
+                    <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+              <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="prohibited"/>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletEntryPointBaseType" mixed="false">
+        <xsd:sequence>
+          <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="page" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="sorting" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="read-only" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="parent" type="PageletEntryPointParentType" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="display-name" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="description" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="configuration-parameters" type="ConfigurationParametersType" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="extension-bounds" type="ExtensionBoundsType" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="simpleType.Generic.String.256"/>
+        <xsd:attribute name="domain" type="simpleType.Generic.String.256"/>
+        <xsd:attribute name="import-mode" type="simpleType.ImportMode"/>
+        <xsd:attribute name="resource-set" type="simpleType.Generic.String.256"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PageletEntryPointType" mixed="false">
+        <xsd:complexContent>
+            <xsd:restriction base="PageletEntryPointBaseType">
+                <xsd:sequence>
+                  <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+                  <xsd:element name="page" type="xsd:boolean" minOccurs="1" maxOccurs="1" />
+                  <xsd:element name="sorting" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                  <xsd:element name="read-only" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+                  <xsd:element name="parent" type="PageletEntryPointParentType" minOccurs="0" maxOccurs="1"/>
+                  <xsd:element name="display-name" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="description" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="configuration-parameters" type="ConfigurationParametersType" minOccurs="0" maxOccurs="1" />
+                  <xsd:element name="extension-bounds" type="ExtensionBoundsType" minOccurs="0" maxOccurs="1" />
+                  <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+                  <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+                </xsd:sequence>
+                <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+                <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="prohibited"/>
+                <xsd:attribute name="resource-set" type="simpleType.Generic.String.256" use="prohibited"/>
+                <xsd:attribute name="import-mode" type="simpleType.ImportMode"/>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SharedPageletEntryPointType" mixed="false">
+        <xsd:complexContent>
+            <xsd:restriction base="PageletEntryPointBaseType">
+                <xsd:sequence>
+		            <xsd:element name="read-only" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="parent" type="PageletEntryPointParentType" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1" />
+		        </xsd:sequence>        
+				<xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+				<xsd:attribute name="domain" type="simpleType.Generic.String.256" use="required"/>
+				<xsd:attribute name="resource-set" type="simpleType.Generic.String.256" use="optional"/>
+                <xsd:attribute name="import-mode" type="simpleType.ImportMode" use="prohibited"/>
+		    </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="ViewContextType" mixed="false">
+        <xsd:sequence>
+            <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="display-name" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="description" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="configuration-parameters" type="ConfigurationParametersType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="fallbacks" type="ViewContextFallbacksType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="ViewContextFallbacksType">
+        <xsd:sequence>
+            <xsd:element name="pagelet-entry-point" minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:complexContent>
+                        <xsd:restriction base="PageletEntryPointBaseType">
+                           <xsd:sequence>
+                              <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+                              <xsd:element name="page" type="xsd:boolean" minOccurs="1" maxOccurs="1" />
+                              <xsd:element name="read-only" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+                              <xsd:element name="configuration-parameters" type="ConfigurationParametersType" minOccurs="0" maxOccurs="1" />
+                              <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+                           	  <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+                           </xsd:sequence>
+                           <xsd:attribute name="id" type="simpleType.Generic.String.256"/>
+                           <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="prohibited"/>
+                           <xsd:attribute name="resource-set" type="simpleType.Generic.String.256" use="prohibited"/>
+                           <xsd:attribute name="import-mode" type="simpleType.ImportMode" use="prohibited"/>
+                        </xsd:restriction>
+                    </xsd:complexContent>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>    
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletEntryPointBusinessObjectAssignmentType" mixed="false">
+       <xsd:sequence>
+          <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="pagelet-entry-point" type="PageletEntryPointReferenceType"/>
+          <xsd:element name="view-context" type="ViewContextReferenceType"/>
+          <xsd:any minOccurs="1" maxOccurs="1" processContents="skip">
+             <xsd:annotation>
+                <xsd:appinfo>
+                   <jxb:dom />
+                </xsd:appinfo>
+             </xsd:annotation>
+          </xsd:any>
+          <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+       </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletPageletEntryPointAssignmentType" mixed="false">
+        <xsd:all>
+            <xsd:element name="pagelet-entry-point" type="PageletEntryPointReferenceType"/>
+            <xsd:element name="pagelet" type="PageletReferenceType"/>
+            <xsd:element name="position" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="valid-from" type="Date" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="valid-to" type="Date" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="online" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletSlotType" mixed="false">
+        <xsd:all>
+            <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="optional" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="sorting" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="read-only" type="xsd:boolean" minOccurs="0" maxOccurs="1" default="false"/>
+            <xsd:element name="hideable" type="xsd:boolean" minOccurs="0" maxOccurs="1" default="false"/>
+            <xsd:element name="configuration-parameters" type="ConfigurationParametersType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PlaceholderDefinitionType" mixed="false">
+        <xsd:sequence>
+            <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="display-name" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="description" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="position" type="xsd:double" minOccurs="0" maxOccurs="1"/>
+            <xsd:choice minOccurs="0" maxOccurs="1">
+                <xsd:element name="parent-placeholder" type="ParentPlaceholderReferenceType"/>
+                <xsd:element name="pagelet-slot-assignment-placeholder" type="PageletSlotAssignmentPlaceholderReferenceType"/>
+                <xsd:element name="pagelet-placeholder-assignment-placeholder" type="PageletPlaceholderAssignmentPlaceholderReferenceType"/>
+                <xsd:element name="pagelet-overriding-placeholder" type="OverridingPlaceholderReferenceType" />
+                <xsd:element name="slot">
+                    <xsd:complexType mixed="false">
+                        <xsd:attribute name="definition-name" type="simpleType.Generic.String.256" use="required"/>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:choice>
+            <xsd:element name="extension-bounds" type="ExtensionBoundsType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="external" type="xsd:boolean" use="optional" default="true" />
+    </xsd:complexType>
+
+    <xsd:complexType name="ExtensionBoundsType">
+        <xsd:all>
+            <xsd:element name="pagelet-definitions" minOccurs="0" maxOccurs="1">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="pagelet-definition" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType mixed="false">
+                                <xsd:attribute name="definition-name" type="simpleType.Generic.String.256"/>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="component-templates" minOccurs="0" maxOccurs="1">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="component-template-constraint" type="PageletReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="PlaceholderConfigurationType" mixed="false">
+        <xsd:sequence>
+            <xsd:choice minOccurs="1" maxOccurs="1">
+                <xsd:element name="parent-placeholder" type="ParentPlaceholderReferenceType"/>
+                <xsd:element name="pagelet-slot-assignment-placeholder" type="PageletSlotAssignmentPlaceholderReferenceType"/>
+                <xsd:element name="pagelet-placeholder-assignment-placeholder" type="PageletPlaceholderAssignmentPlaceholderReferenceType"/>
+                <xsd:element name="pagelet-overriding-placeholder" type="OverridingPlaceholderReferenceType"/>
+            </xsd:choice>
+        </xsd:sequence>
+        <xsd:attribute name="hide-target-content" type="xsd:boolean" default="false"/>
+        <xsd:attribute name="place-target-content-on-top" type="xsd:boolean" default="false" />
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletPlaceholderAssignmentType" mixed="false">
+        <xsd:all>
+            <xsd:element name="placeholder" type="PlaceholderReferenceType" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="pagelet" type="PageletReferenceType"  minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="position" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="valid-from" type="Date" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="valid-to" type="Date" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="online" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+        <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletSlotAssignmentType" mixed="false">
+        <xsd:all>
+            <xsd:element name="slot" type="SlotReferenceType" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="pagelet" type="PageletReferenceType" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="position" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="valid-from" type="Date" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="valid-to" type="Date" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="online" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+        <xsd:attribute name="id" type="simpleType.Generic.String.28" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletEntryPointSharingInformationType" mixed="false">
+    	<xsd:sequence>
+        	<xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="read-only" type="xsd:boolean" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletSlotSharingInformationBaseType" mixed="false">
+        <xsd:annotation>
+            <xsd:documentation>@deprecated since 7.8 use override mechanism to produce domain specific contexts for a shared slot</xsd:documentation>
+        </xsd:annotation>
+    	<xsd:sequence>
+        	<xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="definition-name" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="hidden" type="xsd:boolean" use="required"/>
+        <xsd:attribute name="read-only" type="xsd:boolean" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletSlotSharingInformationType" mixed="false">
+        <xsd:annotation>
+            <xsd:documentation>@deprecated since 7.8 use override mechanism to produce domain specific contexts for a shared slot</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="PageletSlotSharingInformationBaseType">
+                <xsd:attribute name="parent-pagelet-id" type="simpleType.Generic.String.256" use="required"/>
+                <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletReferenceType" mixed="false">
+        <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="optional"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletEntryPointReferenceType"
+    	mixed="false">
+    	<xsd:attribute name="id" type="simpleType.Generic.String.256"
+    		use="required" />
+    	<xsd:attribute name="domain"
+    		type="simpleType.Generic.String.256" use="optional" />
+    	<xsd:attribute name="resource-set" type="simpleType.Generic.String.256" use="optional"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletEntryPointParentType" mixed="false">
+    	<xsd:sequence>
+        	<xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="position" type="xsd:double" use="optional"/>
+        <xsd:attribute name="resource-set" type="simpleType.Generic.String.256" use="optional"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="SlotReferenceType" mixed="false">
+        <xsd:attribute name="definition-name" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="parent-pagelet-id" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="optional"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PlaceholderReferenceType" mixed="false">
+        <xsd:choice minOccurs="1" maxOccurs="1">
+            <xsd:element name="parent-placeholder" type="ParentPlaceholderReferenceType"/>
+            <xsd:element name="pagelet-slot-assignment-placeholder" type="PageletSlotAssignmentPlaceholderReferenceType"/>
+            <xsd:element name="pagelet-placeholder-assignment-placeholder" type="PageletPlaceholderAssignmentPlaceholderReferenceType"/>
+            <xsd:element name="pagelet-overriding-placeholder" type="OverridingPlaceholderReferenceType"/>
+        </xsd:choice>
+        <xsd:attribute name="pagelet-id" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="pagelet-domain" type="simpleType.Generic.String.256" use="optional"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="OverridingPlaceholderReferenceType" mixed="false">
+        <xsd:attribute use="required" name="placeholder-id" type="simpleType.Generic.String.256"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="ParentPlaceholderReferenceType" mixed="false">
+        <xsd:attribute use="required" name="placeholder-id" type="simpleType.Generic.String.256"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletSlotAssignmentPlaceholderReferenceType" mixed="false">
+        <xsd:attribute use="required" name="placeholder-id" type="simpleType.Generic.String.256"/>
+        <xsd:attribute use="required" name="assignment-id" type="simpleType.Generic.String.256"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PageletPlaceholderAssignmentPlaceholderReferenceType" mixed="false">
+        <xsd:attribute use="required" name="placeholder-id" type="simpleType.Generic.String.256"/>
+        <xsd:attribute use="required" name="assignment-id" type="simpleType.Generic.String.256"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="ViewContextReferenceType">
+    	<xsd:attribute name="id" type="simpleType.Generic.String.256"
+    		use="required" />
+    	<xsd:attribute name="domain"
+    		type="simpleType.Generic.String.256" use="optional" />
+    	<xsd:attribute name="resource-set" type="simpleType.Generic.String.256" use="optional"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="ConfigurationParametersType" mixed="false">
+        <xsd:sequence>
+            <xsd:element name="configuration-parameter" type="ConfigurationParameterType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ConfigurationParameterType" mixed="false">
+        <xsd:sequence>
+            <xsd:element name="definition-name" type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="value" type="complexType.CustomAttribute" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="audit-informations" type="AuditInformationsType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="simpleType.Generic.String.256" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="UserType" mixed="false">
+        <xsd:annotation>
+        	<xsd:documentation>@Deprecated</xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="business-partner-no" type="simpleType.Generic.String.256" use="required"/>
+        <xsd:attribute name="domain" type="simpleType.Generic.String.256" use="required"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="AuditInformationsType" mixed="false">
+    	<xsd:sequence>
+    		<xsd:element name="audit-information" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:simpleType name="Date">
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+
+</xsd:schema>
