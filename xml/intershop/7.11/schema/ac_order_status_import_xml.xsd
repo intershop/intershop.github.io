@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://www.intershop.com/xml/ns/intershop/order/status/1.0" xmlns:tns="http://www.intershop.com/xml/ns/intershop/order/status/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="orders" type="tns:ordersXML"/>
+
+  <xs:complexType name="orderXML">
+    <xs:sequence>
+      <xs:element name="product-line-items" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="product-line-item" type="tns:productLineItemXML" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="payment-transactions" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="payment-transaction" type="tns:paymentTransactionXML" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string"/>
+    <xs:attribute name="status" type="xs:string"/>
+    <xs:attribute name="toBeDeleted" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="productLineItemXML">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:string"/>
+    <xs:attribute name="fulfillment-status" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="paymentTransactionXML">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:string"/>
+    <xs:attribute name="status" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="ordersXML">
+    <xs:sequence>
+      <xs:element name="order" type="tns:orderXML" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

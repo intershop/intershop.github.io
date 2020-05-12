@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Minor schema version is increased from 6.2.2 to 6.3 since an optional element 'customers' is added -->
+<!-- Minor schema version of bc_pricing/impex is increased from 7.0 to 7.1 since an optional attribute 'import-mode' is added for ProductPriceListEntry type -->
+<xsd:schema targetNamespace="http://www.intershop.com/xml/ns/enfinity/7.1/bc_pricing/impex" xmlns:dt="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns="http://www.intershop.com/xml/ns/enfinity/7.1/bc_pricing/impex" elementFormDefault="qualified" jxb:version="1.0">
+	<xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/core.xsd"/>
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/xml.xsd"/>
+	<xsd:import namespace="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt" schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/dt.xsd"/>
+	
+	<xsd:element name="enfinity">
+		<xsd:complexType>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="product-price-definition"/>
+				<xsd:element ref="product-price-list"/>
+			</xsd:choice>
+			<xsd:attributeGroup ref="documentVersion"/>
+		</xsd:complexType>
+		<xsd:key name="product-price-list">
+			<xsd:selector xpath="product-price-list"/>
+			<xsd:field xpath="@id"/>
+			<xsd:field xpath="@priceType"/>
+		</xsd:key>
+	</xsd:element>
+	<xsd:element name="product-price-definition" type="ProductPriceDefinitionType"/>
+	<xsd:element name="product-price-list" type="ProductPriceListType">
+		<xsd:key name="price-list-scale">
+			<xsd:selector xpath="price-list-scale"/>
+			<xsd:field xpath="@currency"/>
+		</xsd:key>
+		<xsd:key name="product-price-list-entry">
+			<xsd:selector xpath="product-price-list-entry"/>
+			<xsd:field xpath="@sku"/>
+		</xsd:key>
+	</xsd:element>
+	<xsd:complexType name="ProductPriceDefinitionType">
+		<xsd:sequence>
+			<xsd:element name="price-scale-table" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:restriction base="PriceScaleTable">
+							<xsd:all>
+								<xsd:element name="valid-from" type="simpleType.DateTime" minOccurs="0"/>
+								<xsd:element name="valid-to" type="simpleType.DateTime" minOccurs="0"/>
+								<xsd:element name="customer-segment" type="CustomerSegment" minOccurs="0"/>
+								<xsd:element name="price-scale-entries" type="PriceScaleEntries"/>
+								<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0"/>
+							</xsd:all>
+							<xsd:attribute name="currency" type="simpleType.Generic.Currency.Mnemonic" use="required"/>
+							<xsd:attribute name="type-code" type="xsd:positiveInteger" use="prohibited"/>
+						</xsd:restriction>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="sku" type="simpleType.Generic.String.256" use="required"/>
+		<xsd:attribute name="type-code" type="xsd:positiveInteger" default="1"/>
+		<xsd:attribute name="rule" type="simpleType.Generic.String.256"/>
+		<xsd:attribute name="import-mode" type="simpleType.ImportMode"/>
+	</xsd:complexType>
+	<xsd:complexType name="ProductPriceListType">
+		<xsd:sequence>
+			<xsd:element name="display-name" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="description" type="complexType.Generic.Attribute.String" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="enabled" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="priority" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="valid-from" type="simpleType.DateTime" minOccurs="0"/>
+			<xsd:element name="valid-to" type="simpleType.DateTime" minOccurs="0"/>
+			<xsd:element name="target-groups" type="TargetGroups" minOccurs="0" maxOccurs="1"/>
+			<xsd:choice>
+				<xsd:sequence>
+					<xsd:element name="price-list-scale" type="PriceListScale" maxOccurs="unbounded">
+						<xsd:key name="relative-price-entry-key">
+							<xsd:selector xpath="relative-price-entry"/>
+							<xsd:field xpath="@quantity"/>
+						</xsd:key>
+					</xsd:element>
+					<xsd:element name="products" type="Products" minOccurs="0">
+						<xsd:key name="product-key">
+							<xsd:selector xpath="product"/>
+							<xsd:field xpath="@sku"/>
+						</xsd:key>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:element name="product-price-list-entry" type="ProductPriceListEntry" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:choice>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+		<xsd:attribute name="priceType" type="simpleType.Generic.String.256" use="required"/>
+		<xsd:attribute name="import-mode" type="simpleType.ImportMode"/>
+	</xsd:complexType>
+	<xsd:complexType name="ProductPriceListEntry">
+		<xsd:sequence>
+			<xsd:element name="price-scale-table" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:restriction base="PriceScaleTable">
+							<xsd:all>
+								<xsd:element name="valid-from" type="simpleType.DateTime" minOccurs="0"/>
+								<xsd:element name="valid-to" type="simpleType.DateTime" minOccurs="0"/>
+								<xsd:element name="customer-segment" type="CustomerSegment" minOccurs="0"/>
+								<xsd:element name="price-scale-entries" type="PriceScaleEntries"/>
+								<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0"/>
+							</xsd:all>
+							<xsd:attribute name="currency" type="simpleType.Generic.Currency.Mnemonic" use="required"/>
+							<xsd:attribute name="type-code" type="xsd:positiveInteger" use="required"/>
+						</xsd:restriction>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="sku" type="simpleType.Generic.String.256" use="required"/>
+		<xsd:attribute name="import-mode" type="simpleType.ImportMode"/>
+	</xsd:complexType>
+	<xsd:complexType name="CustomerSegments">
+		<xsd:sequence>
+			<xsd:element name="customer-segment" type="CustomerSegment" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Customers">
+		<xsd:sequence>
+			<xsd:element name="customer" type="Customer" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PriceListScale">
+		<xsd:sequence>
+			<xsd:element ref="relative-price-entry" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="currency" type="simpleType.Generic.Currency.Mnemonic" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="Products">
+		<xsd:sequence>
+			<xsd:element name="product" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attribute name="sku" type="simpleType.Generic.String.256" use="required"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CustomerSegment">
+		<xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+		<xsd:attribute name="repository-id" type="simpleType.Generic.String.256" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="Customer">
+		<xsd:attribute name="id" type="simpleType.Generic.String.256" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="PriceScaleTable">
+		<xsd:all>
+			<xsd:element name="valid-from" type="simpleType.DateTime" minOccurs="0"/>
+			<xsd:element name="valid-to" type="simpleType.DateTime" minOccurs="0"/>
+			<xsd:element name="customer-segment" type="CustomerSegment" minOccurs="0"/>
+			<xsd:element name="price-scale-entries" type="PriceScaleEntries">
+				<xsd:key name="price-scale-entry-key">
+					<xsd:selector xpath="price-scale-entry|fixed-price-entry|relative-price-entry"/>
+					<xsd:field xpath="@quantity"/>
+				</xsd:key>
+			</xsd:element>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0"/>
+		</xsd:all>
+		<xsd:attribute name="currency" type="simpleType.Generic.Currency.Mnemonic" use="required"/>
+		<xsd:attribute name="type-code" type="xsd:positiveInteger"/>
+	</xsd:complexType>
+	<xsd:complexType name="PriceScaleEntries">
+		<xsd:sequence>
+			<xsd:element ref="price-scale-entry" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PriceScaleEntryType">
+		<xsd:all>
+			<xsd:element name="value" type="xsd:decimal"/>
+			<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0"/>
+		</xsd:all>
+		<xsd:attribute name="quantity" type="xsd:decimal" use="required"/>
+		<xsd:attribute name="unit" type="simpleType.Generic.Quantity.Unit" default="n/a"/>
+		<xsd:attribute name="net-price" type="xsd:boolean" default="false"/>
+		<xsd:attribute name="tax-rate" type="xsd:decimal"/>
+		<xsd:attribute name="type-code" type="xsd:positiveInteger"/>
+	</xsd:complexType>
+	<xsd:complexType name="TargetGroups" mixed="false">
+        <xsd:all>
+            <xsd:element name="customer-segments" type="CustomerSegments" minOccurs="0" maxOccurs="1">
+                <xsd:unique name="uniqueCustomerSegment">
+                    <xsd:selector xpath="./customer-segment"/>
+                    <xsd:field xpath="@id"/>
+                    <xsd:field xpath="@repository-id"/>
+                </xsd:unique>
+            </xsd:element>
+            <xsd:element name="customers" type="Customers" minOccurs="0" maxOccurs="1">
+                <xsd:unique name="uniqueCustomer">
+                    <xsd:selector xpath="./customer"/>
+                    <xsd:field xpath="@id"/>
+                </xsd:unique>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+	<xsd:element name="product-price-list-entry" type="ProductPriceListEntry"/>
+	<xsd:element name="price-scale-entry" type="PriceScaleEntryType"/>
+	<xsd:element name="fixed-price-entry" substitutionGroup="price-scale-entry">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="PriceScaleEntryType">
+					<xsd:all>
+						<xsd:element name="value" type="xsd:decimal"/>
+						<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0"/>
+					</xsd:all>
+					<xsd:attribute name="type-code" type="xsd:positiveInteger" use="prohibited"/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="relative-price-entry" substitutionGroup="price-scale-entry">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="PriceScaleEntryType">
+					<xsd:all>
+						<xsd:element name="value" type="xsd:decimal"/>
+						<xsd:element name="custom-attributes" type="complexType.CustomAttributes" minOccurs="0"/>
+					</xsd:all>
+					<xsd:attribute name="type-code" type="xsd:positiveInteger" use="prohibited"/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
