@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	xmlns="http://www.intershop.com/xml/ns/enfinity/6.7/bts/impex"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xml="http://www.w3.org/XML/1998/namespace"
+	xmlns:dt="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"
+	targetNamespace="http://www.intershop.com/xml/ns/enfinity/6.7/bts/impex"
+	elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/core.xsd" />
+	<xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/address.xsd" />
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace"
+		schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/xml.xsd" />
+	<xsd:import
+		namespace="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"
+		schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/dt.xsd" />
+
+	<xsd:element name="enfinity">
+		<xsd:complexType mixed="false">
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="order" type="Order" />
+			</xsd:choice>
+			<xsd:attributeGroup ref="documentVersion" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="Order">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="user" type="Order.User"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="creation-date"
+				type="simpleType.Generic.Date" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="requested-delivery-date"
+				type="simpleType.Generic.Date" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="order-status" type="xsd:string"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="document-no"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="lead-currency"
+				type="simpleType.Generic.Currency.Mnemonic" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="purchase-currency"
+				type="simpleType.Generic.Currency.Mnemonic" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="exchange-rates"
+				type="Order.ExchangeRates" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="invoice-to-address"
+				type="StaticAddress.Reference" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="ship-to-address"
+				type="StaticAddress.Reference" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="ship-from-address"
+				type="StaticAddress.Reference" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="prices" type="Order.Prices"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="payment-instrument-infos"
+				type="Order.PaymentInstrumentInfos" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="custom-attributes"
+				type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="line-items"
+				type="Order.LineItems" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="bundled-line-items"
+				type="Order.BundledLineItems" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="addresses"
+				type="Order.Addresses" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="buyer-no"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="anonymous" type="simpleType.Boolean"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="line-item-groups"
+				type="Order.LineItemGroups" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="session-id" type="xsd:string"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="order-status-details"
+				type="Order.OrderStatusDetails" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="shipping-required"
+				type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="split-shipment-allowed"
+				type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="invoice-used-as-packing-slip"
+				type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="buyer-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="original-buyer-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="basket"
+				type="Basket.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="order-type"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="parent-order"
+				type="Order.Reference" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="document-no"
+			type="simpleType.Generic.String.256" />
+		<xsd:attribute name="order-type"
+			type="simpleType.Generic.String.256" />
+
+		<xsd:attribute name="import-mode">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="OMIT" />
+					<xsd:enumeration value="INITIAL" />
+					<xsd:enumeration value="DELETE" />
+					<xsd:enumeration value="REPLACE" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.User">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="business-partner-no"
+			type="simpleType.Generic.String.256" />
+		<xsd:attribute name="domain"
+			type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.OrderStatusDetails">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="shipping-status" type="xsd:string"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="payment-status" type="xsd:string"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="invoice-status" type="xsd:string"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="export-status" type="xsd:string"
+				minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.PaymentTransactions">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="payment-transaction"
+				type="Order.PaymentTransaction" minOccurs="0"
+				maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.PaymentTransaction">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="service-transaction" type="Order.PaymentTransaction.ServiceTransaction" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="status" type="xsd:string" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="amount"
+				type="Order.PaymentTransaction.Amount" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="amount-captured"
+				type="Order.PaymentTransaction.Amount" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="amount-paid"
+				type="Order.PaymentTransaction.Amount" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="description"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="payer"
+				type="Order.PaymentTransaction.Payer" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="payee"
+				type="Order.PaymentTransaction.Payee" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="payment-histories"
+				type="Order.PaymentHistories" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="custom-attributes"
+				type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+	</xsd:complexType>
+
+	<xsd:complexType
+		name="Order.PaymentTransaction.Payee">
+		<xsd:attribute name="domain"
+			type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType
+		name="Order.PaymentTransaction.Payer">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="business-partner-no"
+			type="simpleType.Generic.String.256" />
+		<xsd:attribute name="domain"
+			type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.PaymentHistories">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="payment-history"
+				type="Order.PaymentHistory" minOccurs="0"
+				maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.PaymentHistory">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="custom-attributes"
+				type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+				<xsd:element name="payment-transaction"
+					type="Order.PaymentTransaction" minOccurs="0"
+					maxOccurs="1" />
+		</xsd:choice>
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="event-id" type="simpleType.Generic.String.256" />
+		<xsd:attribute name="event-date" type="simpleType.Generic.Date" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.PaymentInstrumentInfos">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="payment-instrument-info"
+				type="Order.PaymentInstrumentInfo" minOccurs="0"
+				maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.PaymentInstrumentInfo">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="custom-attributes"
+				type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+				<xsd:element name="payment-transactions"
+					type="Order.PaymentTransactions" minOccurs="0"
+					maxOccurs="1" />
+		</xsd:choice>
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="payment-service-id" type="simpleType.Generic.String.256" />
+		<xsd:attribute name="service-configuration-id" type="simpleType.Generic.String.256" />
+		<xsd:attribute name="service-configuration-domain" type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.PaymentTransaction.ServiceTransaction">
+		<xsd:attribute name="id" type="simpleType.Generic.String.256" use="required" />
+	</xsd:complexType>
+
+	<xsd:complexType
+		name="Order.PaymentTransaction.Amount">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="currency"
+					type="simpleType.Generic.Currency.Mnemonic" use="required" />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.LineItemGroups">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="line-item-group"
+				type="LineItemGroup" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="LineItemGroup">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="prices"
+				type="LineItemGroup.Prices" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="custom-attributes"
+				type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+		<xsd:attribute name="domain" type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="LineItemGroup.Prices">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="net-price"
+				type="LineItem.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="gross-price"
+				type="LineItem.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="tax" type="LineItem.Price"
+				minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="LineItemGroup.Reference">
+		<xsd:attribute name="domain" type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.LineItems">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="product-line-item"
+				type="ProductLineItem" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="service-line-item"
+				type="ServiceLineItem" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.BundledLineItems">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="bundled-line-item"
+				type="BundledProductLineItem" minOccurs="0"
+				maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProductLineItem.Prices">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="single-base-price"
+				type="LineItem.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="single-price"
+				type="LineItem.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="net-price"
+				type="LineItem.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="gross-price"
+				type="LineItem.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="tax" type="LineItem.Price"
+				minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="ServiceLineItem.Prices">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="net-price"
+				type="LineItem.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="gross-price"
+				type="LineItem.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="tax" type="LineItem.Price"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="base-price"
+				type="LineItem.Price" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProductLineItem">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="selling-domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="supplying-domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="product-defining-domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="custom-attributes"
+				type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="discount"
+				type="Discount.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="discount-comment"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="line-item-group"
+				type="LineItemGroup.Reference" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="prices"
+				type="ProductLineItem.Prices" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="product-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="product-short-description"
+				type="simpleType.Generic.String.4000" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="product-thumbnail"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="quantity"
+				type="complexType.Generic.Quantity" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="selected-quantity"
+				type="complexType.Generic.Quantity" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="min-order-quantity"
+				type="complexType.Generic.Quantity" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="step-order-quantity"
+				type="complexType.Generic.Quantity" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="price-quantity"
+				type="simpleType.Generic.Quantity.Value" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="position" type="xsd:integer"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="tax-rate" type="xsd:double" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="base-price-fixed"
+				type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="based-on-net-price"
+				type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="bundle" type="simpleType.Boolean"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="parent"
+				type="LineItem.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="origin"
+				type="ProductLineItem.Origin" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="container"
+				type="Order.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="tax-class"
+				type="TaxClass.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="ship-to-address"
+				type="StaticAddress.Reference" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="ship-from-address"
+				type="StaticAddress.Reference" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="product-reference"
+				type="ProductReference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="adhoc" type="simpleType.Boolean"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="status"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="status2"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="position" type="xsd:integer" />
+	</xsd:complexType>
+
+	<xsd:complexType
+		name="ProductLineItem.BundledLineItems">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="bundled-line-item"
+				type="LineItem.Reference" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProductLineItem.Origin">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+	</xsd:complexType>
+
+	<xsd:complexType name="ServiceLineItem">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="selling-domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="supplying-domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="custom-attributes"
+				type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="discount"
+				type="Discount.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="discount-comment"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="group"
+				type="LineItemGroup.Reference" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="prices"
+				type="ServiceLineItem.Prices" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="tax-rate" type="xsd:double" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="base-price-fixed"
+				type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="based-on-net-price"
+				type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="selected" type="simpleType.Boolean"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="container"
+				type="Order.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="tax-class"
+				type="TaxClass.Reference" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="name" type="simpleType.Generic.String.256" />
+		<xsd:attribute name="domain"
+			type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="BundledProductLineItem">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="selling-domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="supplying-domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="product-defining-domain"
+				type="Domain.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="product-line-item"
+				type="LineItem.Reference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="parent"
+				type="BundledProductLineItem.Reference" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="product-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="product-reference"
+				type="ProductReference" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="product-short-description"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="product-thumbnail"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="product-sku"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="quantity"
+				type="complexType.Generic.Quantity" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="supplier-domain-name"
+				type="simpleType.Generic.String.256" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="custom-attributes"
+				type="complexType.CustomAttributes" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="position" type="xsd:integer" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.Addresses">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="address" type="StaticAddress"
+				minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.ExchangeRates">
+		<xsd:choice minOccurs="0" maxOccurs="3">
+			<xsd:element name="exchange-rate"
+				type="Order.ExchangeRate" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.Prices">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="grand-total-net-price"
+				type="Order.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="grand-total-gross-price"
+				type="Order.Price" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="grand-total-tax"
+				type="Order.Price" minOccurs="0" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.Price">
+		<xsd:simpleContent>
+			<xsd:extension base="simpleType.Generic.Price">
+				<xsd:attribute name="currency"
+					type="simpleType.Generic.Currency.Mnemonic" use="required" />
+				<xsd:attribute name="type"
+					type="simpleType.Generic.CurrencyType" use="required" />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="LineItem.Price">
+		<xsd:simpleContent>
+			<xsd:extension base="simpleType.Generic.Price">
+				<xsd:attribute name="currency"
+					type="simpleType.Generic.Currency.Mnemonic" use="required" />
+				<xsd:attribute name="type"
+					type="simpleType.Generic.CurrencyType" use="required" />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProductReference">
+		<xsd:all>
+			<xsd:element name="product-sku"
+				type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="domain-name"
+				type="simpleType.Generic.String.256" minOccurs="1" maxOccurs="1" />
+		</xsd:all>
+		<xsd:attribute name="type"
+			type="simpleType.Generic.ProductReferenceType" use="required" />
+	</xsd:complexType>
+
+	<xsd:simpleType name="simpleType.Generic.CurrencyType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="LEAD" />
+			<xsd:enumeration value="PURCHASE" />
+			<xsd:enumeration value="TRANSACTION" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="simpleType.Generic.ProductReferenceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OFFER" />
+			<xsd:enumeration value="SELLER" />
+			<xsd:enumeration value="DEFINITION" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="Order.ExchangeRate">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="source"
+					type="simpleType.Generic.CurrencyType" use="required" />
+				<xsd:attribute name="target"
+					type="simpleType.Generic.CurrencyType" use="required" />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="StaticAddress">
+		<xsd:complexContent>
+			<xsd:extension base="complexType.Address">
+				<xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:element name="ship-from-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+					<xsd:element name="ship-to-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+					<xsd:element name="invoice-to-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+					<xsd:element name="default-address"
+						type="simpleType.Boolean" minOccurs="0" maxOccurs="1" />
+				</xsd:choice>
+				<xsd:attribute name="refid" type="simpleType.UUID" />
+				<xsd:attribute name="id"
+					type="simpleType.Generic.String.256" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Order.Reference">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="document-no"
+			type="simpleType.Generic.String.256" />
+		<xsd:attribute name="order-type"
+			type="simpleType.Generic.String.256" />
+		<xsd:attribute name="domain"
+			type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="LineItem.Reference">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="position" type="xsd:integer" />
+	</xsd:complexType>
+
+	<xsd:complexType
+		name="BundledProductLineItem.Reference">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="position" type="xsd:integer" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Discount.Reference">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="name" type="simpleType.Generic.String.256" />
+		<xsd:attribute name="domain"
+			type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="PaymentMethod.Reference">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="name" type="simpleType.Generic.String.256" />
+		<xsd:attribute name="domain"
+			type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Basket.Reference">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+	</xsd:complexType>
+
+	<xsd:complexType name="TaxClass.Reference">
+		<xsd:attribute name="refid"
+			type="simpleType.Generic.String.256" />
+		<xsd:attribute name="id" type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="StaticAddress.Reference">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="id" type="simpleType.Generic.String.256" />
+		<xsd:attribute name="name" type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Domain.Reference">
+		<xsd:attribute name="refid" type="simpleType.UUID" />
+		<xsd:attribute name="name" type="simpleType.Generic.String.256" />
+	</xsd:complexType>
+
+</xsd:schema>
