@@ -3,7 +3,7 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified">
 
-	<xsd:include schemaLocation="core.xsd" />
+	<xsd:include schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/core.xsd" />
 
 	<xsd:complexType name="complexType.Address" mixed="false">
 		<xsd:choice minOccurs="0" maxOccurs="unbounded">
