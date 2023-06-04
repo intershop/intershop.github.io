@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema
-    targetNamespace="https://intershop.github.io/xml/enfinity/6.5/core/processchain"
-    xmlns="https://intershop.github.io/xml/enfinity/6.5/core/processchain"
+    targetNamespace="http://www.intershop.com/xml/ns/semantic/processchain/v1"
+    xmlns="http://www.intershop.com/xml/ns/semantic/processchain/v1"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xml="http://www.w3.org/XML/1998/namespace"
     elementFormDefault="qualified">
 
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="https://intershop.github.io/xml/intershop/7.11/schema/xml.xsd" />
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+        schemaLocation="../../www.w3.org/XML/1998/namespace.xsd" />
 
     <xs:complexType name="complexTypeLocalizedString" mixed="true">
         <xs:simpleContent>
