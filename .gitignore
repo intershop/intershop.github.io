@@ -1,0 +1,14 @@
+# IntelliJ project files
+*.iml
+.idea/
+generated/
+
+# Eclipse project files
+bin/
+.settings/
+
+# VS Code
+.vscode/
+
+.gradle/
+build/
