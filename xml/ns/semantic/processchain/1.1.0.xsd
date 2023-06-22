@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema
-    targetNamespace="http://www.intershop.com/xml/ns/semantic/processchain/v1"
-    xmlns="http://www.intershop.com/xml/ns/semantic/processchain/v1"
+    targetNamespace="https://www.intershop.com/xml/ns/semantic/processchain/v1"
+    xmlns="https://www.intershop.com/xml/ns/semantic/processchain/v1"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xml="http://www.w3.org/XML/1998/namespace"
     elementFormDefault="qualified">
