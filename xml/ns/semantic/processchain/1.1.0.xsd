@@ -80,7 +80,7 @@ You can return more than one error code by adding this integer values.</xs:docum
                             <xs:documentation>The alive time unit is fixed to MINUTES</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="defaultChainElementTimeout" use="optional" type="xs:long" default="1440">
+                    <xs:attribute name="defaultChainElementTimeout" use="optional" type="xs:long" default="60">
                         <xs:annotation>
                             <xs:documentation>The default timeout for chain elements. It is fixed to MINUTES.</xs:documentation>
                         </xs:annotation>
