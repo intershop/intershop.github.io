@@ -24,13 +24,13 @@
                     <xs:documentation>Using ignore you can suppress specified error codes your pipeline returns. A list of ignore tags is intertwined as OR. Available error codes are:
 SUCCESS, WARNING, FAILURE, ERROR, NOTFOUND, INTERRUPTED and STUCK.
 
-To return an error code from your pipeline, declare a return parameter with name "ProcessChainResult" as Integer. 
-Each error code have an equivalent integer value that are: 
-STATUS_SUCCESS = 0; 
-STATUS_WARNING = 1; 
-STATUS_FAILURE = 2; 
-STATUS_ERROR   = 4; 
-STATUS_NOTFOUND = 8; 
+To return an error code from your pipeline, declare a return parameter with name "ProcessChainResult" as Integer.
+Each error code have an equivalent integer value that are:
+STATUS_SUCCESS = 0;
+STATUS_WARNING = 1;
+STATUS_FAILURE = 2;
+STATUS_ERROR   = 4;
+STATUS_NOTFOUND = 8;
 STATUS_INTERRUPTED = 16;
 STATUS_STUCK = 32;
 
@@ -104,7 +104,7 @@ You can return more than one error code by adding this integer values.</xs:docum
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
-    
+
     <xs:element name="sequence">
         <xs:annotation>
             <xs:documentation>Declares a list of jobs and or pipelines to run in sequence.</xs:documentation>
@@ -120,7 +120,7 @@ You can return more than one error code by adding this integer values.</xs:docum
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
-    
+
     <xs:element name="error">
         <xs:annotation>
             <xs:documentation>Declares a error path inside a sequence.</xs:documentation>
@@ -130,7 +130,7 @@ You can return more than one error code by adding this integer values.</xs:docum
             <xs:attribute name="name" use="optional" type="xs:normalizedString" />
         </xs:complexType>
     </xs:element>
-    
+
     <xs:group name="tasksForSequenceList">
         <xs:sequence>
             <xs:group maxOccurs="unbounded" ref="tasksForSequence" />
@@ -170,13 +170,13 @@ You can return more than one error code by adding this integer values.</xs:docum
                 <xs:annotation>
                     <xs:documentation>Declares a pipeline to run.
 
-To return an error code from your pipeline, declare a return parameter with name "ProcessChainResult" as Integer. 
-Each error code have an equivalent integer value that are: 
-STATUS_SUCCESS = 0; 
-STATUS_WARNING = 1; 
-STATUS_FAILURE = 2; 
-STATUS_ERROR   = 4; 
-STATUS_NOTFOUND = 8; 
+To return an error code from your pipeline, declare a return parameter with name "ProcessChainResult" as Integer.
+Each error code have an equivalent integer value that are:
+STATUS_SUCCESS = 0;
+STATUS_WARNING = 1;
+STATUS_FAILURE = 2;
+STATUS_ERROR   = 4;
+STATUS_NOTFOUND = 8;
 STATUS_INTERRUPTED = 16;
 STATUS_STUCK = 32;
 
