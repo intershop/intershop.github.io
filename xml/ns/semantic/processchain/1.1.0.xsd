@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    targetNamespace="https://www.intershop.com/xml/ns/semantic/processchain/v1"
+    xmlns="https://www.intershop.com/xml/ns/semantic/processchain/v1"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
+    elementFormDefault="qualified">
+
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+               schemaLocation="http://www.w3.org/2001/xml.xsd" />
+
+    <xs:complexType name="complexTypeLocalizedString" mixed="true">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute ref="xml:lang" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="chainElement">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="ignore" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Using ignore you can suppress specified error codes your pipeline returns. A list of ignore tags is intertwined as OR. Available error codes are:
+SUCCESS, WARNING, FAILURE, ERROR, NOTFOUND, INTERRUPTED and STUCK.
+
+To return an error code from your pipeline, declare a return parameter with name "ProcessChainResult" as Integer.
+Each error code have an equivalent integer value that are:
+STATUS_SUCCESS = 0;
+STATUS_WARNING = 1;
+STATUS_FAILURE = 2;
+STATUS_ERROR   = 4;
+STATUS_NOTFOUND = 8;
+STATUS_INTERRUPTED = 16;
+STATUS_STUCK = 32;
+
+You can return more than one error code by adding this integer values.</xs:documentation>
+                </xs:annotation></xs:element>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="description" type="complexTypeLocalizedString" />
+        </xs:sequence>
+        <xs:attribute name="name" use="optional" type="xs:normalizedString" />
+        <xs:attribute name="timeout" use="optional" type="xs:long" default="0">
+            <xs:annotation>
+                <xs:documentation>The timeout unit is fixed to MINUTES</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="chainTask">
+            <xs:complexContent>
+                <xs:extension base="chainElement">
+                    <xs:attribute name="domain" use="optional" type="xs:NMTOKEN" />
+                </xs:extension>
+            </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="chain">
+        <xs:annotation>
+            <xs:documentation>Declares a process chain element.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="chainElement">
+                    <xs:choice>
+                        <xs:element ref="concurrent" />
+                        <xs:element ref="sequence" />
+                    </xs:choice>
+                    <xs:attribute name="corePoolSize" use="optional" type="xs:short" default="5">
+                        <xs:annotation>
+                            <xs:documentation>The minimum or starting count of working threads.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="maximumPoolSize" use="optional" type="xs:short" default="10">
+                        <xs:annotation>
+                            <xs:documentation>The maximum count of working threads.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="keepAliveTime" use="optional" type="xs:long" default="5">
+                        <xs:annotation>
+                            <xs:documentation>The alive time unit is fixed to MINUTES</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="defaultChainElementTimeout" use="optional" type="xs:long" default="60">
+                        <xs:annotation>
+                            <xs:documentation>The default timeout for chain elements. It is fixed to MINUTES.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="concurrent">
+        <xs:annotation>
+            <xs:documentation>Declares a set of sequences that may run concurrent to each other.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="chainElement">
+                    <xs:sequence>
+                        <xs:group ref="tasksForConcurrentList" />
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="sequence">
+        <xs:annotation>
+            <xs:documentation>Declares a list of jobs and or pipelines to run in sequence.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="chainElement">
+                    <xs:sequence>
+                        <xs:group ref="tasksForSequenceList" />
+                        <xs:element minOccurs="0" maxOccurs="1" ref="error" />
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="error">
+        <xs:annotation>
+            <xs:documentation>Declares a error path inside a sequence.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:group ref="taskList" />
+            <xs:attribute name="name" use="optional" type="xs:normalizedString" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:group name="tasksForSequenceList">
+        <xs:sequence>
+            <xs:group maxOccurs="unbounded" ref="tasksForSequence" />
+        </xs:sequence>
+    </xs:group>
+    <xs:group name="tasksForSequence">
+        <xs:choice>
+            <xs:group ref="task" />
+            <xs:element ref="concurrent" />
+            <xs:element ref="sequence" />
+        </xs:choice>
+    </xs:group>
+    <!-- without concurrent to avoid order problems concurrent -> concurrent  -->
+    <xs:group name="tasksForConcurrentList">
+        <xs:sequence>
+            <xs:group maxOccurs="unbounded" ref="tasksForConcurrent" />
+        </xs:sequence>
+    </xs:group>
+    <xs:group name="tasksForConcurrent">
+        <xs:choice>
+            <xs:group ref="task" />
+            <xs:element ref="sequence" />
+        </xs:choice>
+    </xs:group>
+    <xs:group name="taskList">
+        <xs:sequence>
+            <xs:group maxOccurs="unbounded" ref="task" />
+        </xs:sequence>
+    </xs:group>
+    <xs:group name="task">
+        <xs:choice>
+            <xs:element name="job" type="taskJob">
+                <xs:annotation>
+                    <xs:documentation>Declares a job to run.</xs:documentation>
+                </xs:annotation></xs:element>
+            <xs:element name="pipeline" type="taskPipeline">
+                <xs:annotation>
+                    <xs:documentation>Declares a pipeline to run.
+
+To return an error code from your pipeline, declare a return parameter with name "ProcessChainResult" as Integer.
+Each error code have an equivalent integer value that are:
+STATUS_SUCCESS = 0;
+STATUS_WARNING = 1;
+STATUS_FAILURE = 2;
+STATUS_ERROR   = 4;
+STATUS_NOTFOUND = 8;
+STATUS_INTERRUPTED = 16;
+STATUS_STUCK = 32;
+
+You can return more than one error code by adding this int values.</xs:documentation>
+                </xs:annotation></xs:element>
+        </xs:choice>
+    </xs:group>
+    <xs:complexType name="taskJob">
+        <xs:complexContent>
+            <xs:extension base="chainTask">
+                <xs:attribute name="job" use="required" type="xs:token">
+                    <xs:annotation>
+                        <xs:documentation>the job name</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="allsites" use="optional" type="xs:boolean" default="false">
+                    <xs:annotation>
+                        <xs:documentation>Executes on all sites the job with the given job name.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="concurrent" use="optional" type="xs:boolean" default="false">
+                    <xs:annotation>
+                        <xs:documentation>Enables the concurrent execution if allsites="true".</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="taskPipeline">
+        <xs:complexContent>
+            <xs:extension base="chainTask">
+                <xs:sequence>
+                    <xs:element name="parameter" type="parameter" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+                <xs:attribute name="pipeline" use="required" type="xs:NMTOKEN">
+                    <xs:annotation>
+                        <xs:documentation>the pipeline name</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="startnode" use="optional" type="xs:NMTOKEN" default="Start">
+                    <xs:annotation>
+                        <xs:documentation>the start node name of the pipeline</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="login" use="optional" type="xs:NMTOKEN" />
+                <xs:attribute name="password" use="optional" type="xs:NMTOKEN" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="parameter" mixed="true">
+        <xs:attribute name="name" use="required" type="xs:NMTOKEN" />
+        <xs:attribute name="multi" use="optional" type="xs:boolean" default="false" />
+    </xs:complexType>
+</xs:schema>
