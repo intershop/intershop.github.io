@@ -1,12 +1,22 @@
 # intershop.github.io
 
-## Intershop XSD  ##
+Welcome to **intershop.github.io**! 
 
-New Intershop XSD provide semantic versioning. The XSD containing the major version in their namespace.
-Additionally former XSD are provided to identify differences between versions.
+This repository contains XSD (XML Schema Definition) files that facilitate the creation of XML files.
 
-| file location       | target namespace                             |
-|---------------------|----------------------------------------------|
-| xml/ns/semantic     | https://www.intershop.com/xml/ns/semantic    |
-| xml/ns/enfinity/6.4 | http://www.intershop.com/xml/ns/enfinity/6.4 |
-| xml/ns/enfinity/6.5 | http://www.intershop.com/xml/ns/enfinity/6.5 |
+## Semantic Versioning
+
+Newer versions of the XSD files follow semantic versioning principles and include the keyword `semantic`. Each XSD file's namespace specifies its version.
+Additionally, you can find XSD files for former versions, so you can identify the differences between versions.
+
+
+## Available XSDs
+
+The following XSDs are available:
+
+| File Location       | Target Namespace                               |
+|---------------------|------------------------------------------------|
+| xml/ns/semantic     | `https://www.intershop.com/xml/ns/semantic`    |
+| xml/ns/enfinity/6.4 | `http://www.intershop.com/xml/ns/enfinity/6.4` |
+
+Happy coding! 🚀
