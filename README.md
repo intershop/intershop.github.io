@@ -18,5 +18,7 @@ The following XSDs are available:
 |---------------------|------------------------------------------------|
 | xml/ns/semantic     | `https://www.intershop.com/xml/ns/semantic`    |
 | xml/ns/enfinity/6.4 | `http://www.intershop.com/xml/ns/enfinity/6.4` |
+| xml/ns/enfinity/6.5 | `http://www.intershop.com/xml/ns/enfinity/6.5` |
+| xml/ns/enfinity/7.1 | `http://www.intershop.com/xml/ns/enfinity/7.1` |
 
 Happy coding! 🚀
